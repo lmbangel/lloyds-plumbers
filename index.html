@@ -6,6 +6,14 @@
 <meta name="robots" content="noindex, nofollow">
 <title>24/7 Plumbers in Gqeberha (Port Elizabeth) | Lloyd's Plumbers, since 1996</title>
 <meta name="description" content="Burst pipes, blocked drains, geysers and leak detection across Gqeberha. Registered plumbers, five teams on the road 24/7, fixed quotes before we start. Call 041 581 2292.">
+<script>
+/* Analytics for the concept site. Paste the IDs from umami.is and clarity.microsoft.com;
+   each tool loads only once its ID is set. */
+var UMAMI_ID='';
+var CLARITY_ID='';
+if(UMAMI_ID){var u=document.createElement('script');u.defer=true;u.src='https://cloud.umami.is/script.js';u.setAttribute('data-website-id',UMAMI_ID);document.head.appendChild(u);}
+if(CLARITY_ID){(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script",CLARITY_ID);}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,600..900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -669,6 +677,36 @@ document.querySelectorAll('[data-wa]').forEach(function(a){
   a.href='https://wa.me/'+WA_NUMBER+'?text='+encodeURIComponent(a.getAttribute('data-wa'));
   a.target='_blank'; a.rel='noopener';
 });
+/* Click tracking: every tap is named "<what> - <where>", e.g. "WhatsApp - hero".
+   Sent to Umami and Clarity when they're loaded; does nothing otherwise. */
+function trackEvent(name){
+  try{ if(window.umami&&umami.track) umami.track(name); }catch(e){}
+  try{ if(window.clarity) clarity('event',name); }catch(e){}
+}
+var AREAS=[['.topbar','top bar'],['header.site','header'],['#quote','quote form'],['.hero','hero'],['.sos','emergency steps'],
+  ['#services','services'],['#how','how it works'],['#about','about'],['.clients','client letters'],['#trade','agents section'],
+  ['#reviews','reviews'],['#areas','areas'],['#faq','FAQ'],['.final','final call to action'],['footer','footer'],['.actionbar','phone bar']];
+function areaOf(el){ for(var i=0;i<AREAS.length;i++){ if(el.closest(AREAS[i][0])) return AREAS[i][1]; } return 'page'; }
+document.addEventListener('click',function(e){
+  var el=e.target.closest('a,button,summary'); if(!el) return;
+  var href=el.getAttribute('href')||'', what='';
+  if(href.indexOf('tel:')===0) what='Call';
+  else if(el.hasAttribute('data-wa')) what='WhatsApp';
+  else if(el.classList.contains('leave')) what='Leave a review';
+  else if(href.indexOf('g.page')>-1) what='Google reviews';
+  else if(href.indexOf('facebook.com')>-1) what='Facebook';
+  else if(el.classList.contains('chip')) what='Problem: '+el.textContent.trim();
+  else if(el.classList.contains('cl-more')) what=el.textContent.trim()==='Read more'?'Read more':'Show less';
+  else if(el.classList.contains('svc')) what='Service: '+el.querySelector('h3').textContent.trim();
+  else if(el.tagName==='SUMMARY') what='FAQ: '+el.textContent.trim();
+  else if(el.closest('.area-list')) what='Suburb: '+el.textContent.trim();
+  else if(el.id==='q-reopen') what='WhatsApp retry';
+  else if(href==='#quote') what='Get a quote';
+  else if(el.closest('nav.main')) what='Menu: '+el.textContent.trim();
+  if(what) trackEvent(what+' - '+areaOf(el));
+},true);
+document.getElementById('q-photo').addEventListener('change',function(){ trackEvent('Photo added - quote form'); });
+
 document.querySelectorAll('.chip').forEach(function(c){
   c.addEventListener('click',function(){
     document.querySelectorAll('.chip').forEach(function(o){o.setAttribute('aria-pressed','false')});
@@ -736,6 +774,7 @@ document.getElementById('quote').addEventListener('submit',function(e){
   var err=document.getElementById('q-error');
   if(!name||tel.replace(/\D/g,'').length<9){
     err.textContent='Please add your name and a phone number so we can call you back.';
+    trackEvent('Phone me back missing details - quote form');
     (name?document.getElementById('q-tel'):document.getElementById('q-name')).focus();
     return;
   }
@@ -748,6 +787,7 @@ document.getElementById('quote').addEventListener('submit',function(e){
   if(photo) lines.push('','I\'ll attach a photo of the problem.');
   lastWaUrl='https://wa.me/'+WA_NUMBER+'?text='+encodeURIComponent(lines.join('\n'));
   window.open(lastWaUrl,'_blank','noopener');
+  trackEvent('Phone me back sent - quote form');
   form.querySelector('.form-body').style.display='none';
   form.querySelector('.thanks').style.display='block';
   form.querySelector('.photo-tip').hidden=!photo;
