@@ -282,6 +282,10 @@ footer a:hover{color:#fff}
 .fsoc a{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.08);color:#fff}
 .fsoc a:hover{background:var(--brand);color:var(--forest)}
 .fsoc svg{width:20px;height:20px}
+.freg{margin-top:22px;display:flex;align-items:center;gap:14px}
+.freg span{font-size:13px;font-weight:600;color:#fff;max-width:90px;line-height:1.3}
+.freg a{display:inline-block;background:#fff;border-radius:10px;padding:6px}
+.freg img{display:block;width:128px;height:auto}
 footer .wrap.legal{border-top:1px solid rgba(255,255,255,.1);padding:22px 0 28px;font-size:13.5px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 
 /* mobile action bar */
@@ -626,7 +630,7 @@ footer .wrap.legal{border-top:1px solid rgba(255,255,255,.1);padding:22px 0 28px
 </section>
 </main>
 
-<footer>
+<footer id="contact">
   <div class="wrap">
     <div>
       <a class="flogo" href="#"><img src="assets/logo.png" alt="Lloyd's Plumbers"></a>
@@ -636,6 +640,10 @@ footer .wrap.legal{border-top:1px solid rgba(255,255,255,.1);padding:22px 0 28px
         <a href="https://www.facebook.com/LloydsPlumbers/" target="_blank" rel="noopener" aria-label="Facebook"><svg><use href="#i-fb"/></svg></a>
         <a href="https://g.page/r/CX-WjrMhE1OkEAE" target="_blank" rel="noopener" aria-label="Google reviews"><svg><use href="#i-google"/></svg></a>
         <a href="#quote" aria-label="WhatsApp" data-wa="Hi Lloyd's Plumbers, I need a plumber."><svg><use href="#i-wa"/></svg></a>
+      </div>
+      <div class="freg">
+        <span>Professional registration</span>
+        <a href="https://www.iopsa.org/" target="_blank" rel="noopener" aria-label="Registered with the Institute of Plumbing South Africa (IOPSA)"><img src="assets/iopsa.png" alt="IOPSA, the Institute of Plumbing South Africa" width="128" height="60"></a>
       </div>
     </div>
     <div>
@@ -694,6 +702,7 @@ document.addEventListener('click',function(e){
   else if(el.classList.contains('leave')) what='Leave a review';
   else if(href.indexOf('g.page')>-1) what='Google reviews';
   else if(href.indexOf('facebook.com')>-1) what='Facebook';
+  else if(href.indexOf('iopsa.org')>-1) what='IOPSA logo';
   else if(el.classList.contains('chip')) what='Problem: '+el.textContent.trim();
   else if(el.classList.contains('cl-more')) what=el.textContent.trim()==='Read more'?'Read more':'Show less';
   else if(el.classList.contains('svc')) what='Service: '+el.querySelector('h3').textContent.trim();
